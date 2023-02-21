@@ -20,4 +20,6 @@ build-image-user-service:
     - docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd user-service
-    - depot build --project td1mkrfjz6 -t $USER_IMAGE_NAME:$USER_IMAGE_TAG . --push
+    - docker build -t $USER_IMAGE_NAME:$USER_IMAGE_TAG .
+    - docker push $USER_IMAGE_NAME:$USER_IMAGE_TAG
+    # - depot build --project td1mkrfjz6 -t $USER_IMAGE_NAME:$USER_IMAGE_TAG . --push
