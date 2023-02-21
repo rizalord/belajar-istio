@@ -2,7 +2,7 @@ stages:
   - build
 
 variables:
-  USER_IMAGE_NAME: rizalord/istio-user-service
+  USER_IMAGE_NAME: $REGISTRY_USERNAME/istio-user-service
   USER_IMAGE_TAG: latest
 
 build-image-user-service:
