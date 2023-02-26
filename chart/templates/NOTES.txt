@@ -1,0 +1,2 @@
+App: Belajar Istio
+Description: Belajar Istio Service Mesh dengan Kubernetes

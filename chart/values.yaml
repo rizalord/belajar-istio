@@ -1,0 +1,60 @@
+appName: belajar-istio
+
+domain: istio.local
+
+services:
+  - name: auth
+    isPublic: true
+    path: /auth
+    container:
+      image: rizalord/istio-auth-service:latest
+      port: 
+        service: 3000
+        container: 3000
+      env:
+        - name: USER_SERVICE_HOST
+          value: user-service
+        - name: USER_SERVICE_PORT
+          value: 3001
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  - name: user
+    isPublic: false
+    path: null
+    container:
+      image: rizalord/istio-user-service:latest
+      port: 
+        service: 3001
+        container: 3001
+      env: []
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  
+  # - name: nginx
+  #   isPublic: false
+  #   path: null
+  #   container:
+  #     image: nginx
+  #     port: 
+  #       service: 80
+  #       container: 80
+  #     env: []
+  #   resources:
+  #     limits:
+  #       cpu: 100m
+  #       memory: 128Mi
+  #     requests:
+  #       cpu: 100m
+  #       memory: 128Mi
+

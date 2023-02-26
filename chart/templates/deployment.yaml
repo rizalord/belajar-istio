@@ -1,0 +1,41 @@
+{{ range .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ .name }}-deployment
+  labels:
+    app: {{ .name }}-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}-pod
+    spec:
+      containers:
+      - name: {{ .name }}-container
+        image: {{ .container.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .container.port.container | int }}
+        envFrom:
+          - secretRef:
+              name: {{ .name }}-secret
+        livenessProbe:
+          {{ if .isPublic }}
+          httpGet:
+            path: /health
+            port: {{ .container.port.container | int }}
+          {{ else }}
+          tcpSocket:
+            port: {{ .container.port.container | int }}
+          {{ end }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+        resources: {{ .resources | toYaml | nindent 10 }}
+{{- end }}

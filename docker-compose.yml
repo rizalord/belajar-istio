@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  user-service:
+    image: rizalord/istio-user-service:latest
+    container_name: user-service
+    ports:
+      - "3001:3001"
+    networks:
+      - belajar-istio-network
+  
+  auth-service:
+    image: rizalord/istio-auth-service:latest
+    container_name: auth-service
+    ports:
+      - "3000:3000"
+    environment:
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=3001
+    networks:
+      - belajar-istio-network
+
+networks:
+  belajar-istio-network:

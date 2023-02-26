@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/chart.json": "file:///d%3A/Projects/belajar-istio/chart/templates/deployment.yaml"
+    }
+}

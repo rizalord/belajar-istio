@@ -54,6 +54,7 @@ export class AppService {
     const user = await firstValueFrom(
       this.client.send<User>(pattern, payload).pipe(
         catchError((err) => {
+          console.log(err);
           throw new InternalServerErrorException('User service is down', err);
         }),
       ),
