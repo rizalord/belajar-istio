@@ -6,7 +6,7 @@ variables:
   USER_IMAGE_TAG: latest
   AUTH_IMAGE_NAME: $REGISTRY_USERNAME/istio-auth-service
   AUTH_IMAGE_TAG: latest
-  ANALYTICS_IMAGE_NAME: $REGISTRY_USERNAME/istio-analytics-service
+  ANALYTICS_IMAGE_NAME: $REGISTRY_USERNAME/istio-analytic-service
   ANALYTICS_IMAGE_TAG: latest
 
 build-image-user-service:

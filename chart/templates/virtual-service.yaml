@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: belajar-istio-vs
+spec:
+  hosts:
+  - istio.local
+  gateways:
+  - belajar-istio-gw
+  http:
+  - match:
+    - uri:
+        prefix: /auth/
+    - uri:
+        exact: /auth
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: auth-service
+        subset: v1
+  - match:
+    - uri:
+        prefix: /analytic/
+    - uri:
+        exact: /analytic
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: analytic-service
+        subset: v1

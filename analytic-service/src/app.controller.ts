@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 import {
   HealthCheck,
@@ -17,6 +18,7 @@ export class AppController {
     private readonly http: HttpHealthIndicator,
     private readonly microservice: MicroserviceHealthIndicator,
     private readonly appService: AppService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get('health')
@@ -28,8 +30,8 @@ export class AppController {
         this.microservice.pingCheck('tcp-user-service', {
           transport: Transport.TCP,
           options: {
-            host: 'localhost',
-            port: 3001,
+            host: this.configService.get('USER_SERVICE_HOST') || 'localhost',
+            port: this.configService.get('USER_SERVICE_PORT') || 3001,
           },
         }),
     ]);
@@ -47,5 +49,4 @@ export class AppController {
   async analytics() {
     return await this.appService.getAnalytics();
   }
-
 }

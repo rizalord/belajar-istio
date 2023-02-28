@@ -1,9 +1,22 @@
 repositories:
-- name: ingress-nginx
-  url: https://kubernetes.github.io/ingress-nginx
+# - name: ingress-nginx
+#   url: https://kubernetes.github.io/ingress-nginx
+- name: istio
+  url: https://istio-release.storage.googleapis.com/charts
 
 releases:
-- name: ingress-nginx
-  namespace: ingress-nginx
-  chart: ingress-nginx/ingress-nginx
-  version: 4.5.2
+# - name: ingress-nginx
+#   namespace: ingress-nginx
+#   chart: ingress-nginx/ingress-nginx
+#   version: 4.5.2
+- name: istio-base
+  namespace: istio-system
+  chart: istio/base
+- name: istiod
+  namespace: istio-system
+  chart: istio/istiod
+  wait: true
+- name: istio-ingress
+  namespace: istio-ingress
+  chart: istio/gateway
+  wait: true

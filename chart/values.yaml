@@ -40,21 +40,24 @@ services:
       requests:
         cpu: 100m
         memory: 128Mi
-  
-  # - name: nginx
-  #   isPublic: false
-  #   path: null
-  #   container:
-  #     image: nginx
-  #     port: 
-  #       service: 80
-  #       container: 80
-  #     env: []
-  #   resources:
-  #     limits:
-  #       cpu: 100m
-  #       memory: 128Mi
-  #     requests:
-  #       cpu: 100m
-  #       memory: 128Mi
 
+  - name: analytic
+    isPublic: true
+    path: /analytic
+    container:
+      image: rizalord/istio-analytic-service:latest
+      port: 
+        service: 3002
+        container: 3002
+      env:
+        - name: USER_SERVICE_HOST
+          value: user-service
+        - name: USER_SERVICE_PORT
+          value: 3001
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
