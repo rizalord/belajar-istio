@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
-import { Body } from '@nestjs/common/decorators';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
+import { AuthGuard } from '@nestjs/passport'
 import {
   HealthCheck,
   HealthCheckService,
@@ -10,10 +10,7 @@ import {
   HttpHealthIndicator,
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus/dist/health-indicator';
-import { Request } from 'express';
 import { AppService } from './app.service';
-import { LoginRequestDto } from './dto/login-request.dto';
-import { RegisterRequestDto } from './dto/register-request.dto';
 
 @Controller()
 export class AppController {
@@ -44,23 +41,14 @@ export class AppController {
   @Get()
   getInfo() {
     return {
-      name: 'Auth Service',
+      name: 'Analytic Service',
       version: '1.0.0',
     };
   }
 
-  @Post('login')
-  login(@Body() loginRequestDto: LoginRequestDto) {
-    return this.appService.login(loginRequestDto);
-  }
-
-  @Post('register')
-  register(@Body() registerRequestDto: RegisterRequestDto) {
-    return this.appService.register(registerRequestDto);
-  }
-
-  @Get('profile')
-  profile(@Req() req: Request) {
-    return this.appService.profile(req);
+  @Get('analytics')
+  @UseGuards(AuthGuard('jwt'))
+  async analytics() {
+    return await this.appService.getAnalytics();
   }
 }

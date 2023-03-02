@@ -1,18 +1,23 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config/dist';
+import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices/enums';
 import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { ConfigService } from '@nestjs/config/dist';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TerminusModule,
     HttpModule,
+    JwtModule,
+    CacheModule.register(),
     ClientsModule.registerAsync([
       {
         name: 'USER_SERVICE',
@@ -28,6 +33,6 @@ import { ConfigService } from '@nestjs/config/dist';
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LocalStrategy, JwtStrategy],
 })
 export class AppModule {}

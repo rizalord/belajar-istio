@@ -48,7 +48,6 @@ export class AppController {
 
   @MessagePattern({ cmd: 'createUser' })
   createUser(user: User): User {
-    console.log(user);
     return this.appService.create(user);
   }
 

@@ -9,15 +9,20 @@ import { ClientProxy } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { User } from './models/user.model';
-import * as jwt from 'jsonwebtoken';
 import { RegisterRequestDto } from './dto/register-request.dto';
 import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import * as fs from 'fs';
+import * as jose from 'node-jose';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
+  constructor(
+    @Inject('USER_SERVICE') private client: ClientProxy,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(loginRequestDto: LoginRequestDto) {
+  async validateUser(loginRequestDto: LoginRequestDto) {
     const pattern = { cmd: 'getUser' };
     const payload = loginRequestDto.username;
 
@@ -38,8 +43,21 @@ export class AppService {
     }
 
     user.password = undefined;
+    return user;
+  }
 
-    const token = jwt.sign(user, 'secret', { expiresIn: '1h' });
+  async login(user: any) {
+    const secret = fs.readFileSync('./certs/private.pem');
+
+    user.iss = 'istio.local'
+
+    const token = this.jwtService.sign(user, {
+      secret,
+      expiresIn: '3h',
+      algorithm: 'RS256',
+    });
+
+    user.iss = undefined;
 
     return {
       message: 'Login successful',
@@ -76,6 +94,18 @@ export class AppService {
     return {
       message: 'Profile fetched successfully',
       data: request.user,
+    };
+  }
+
+  async getJwks() {
+    const publicKey = fs.readFileSync('./certs/public.pem');
+    const jwkKey = await jose.JWK.asKey(publicKey, 'pem', { use: 'sig' });
+    return {
+      keys: [
+        {
+          ...jwkKey.toJSON(),
+        },
+      ],
     };
   }
 }
