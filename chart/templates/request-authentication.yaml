@@ -1,0 +1,12 @@
+# apiVersion: security.istio.io/v1beta1
+# kind: RequestAuthentication
+# metadata:
+#   name: jwt-request-authentication
+#   namespace: default
+# spec:
+#   selector:
+#     matchLabels:
+#       app: analytic-deployment
+#   jwtRules:
+#   - issuer: "istio.local"
+#     jwksUri: http://auth-service:3000/.well-known/jwks.json

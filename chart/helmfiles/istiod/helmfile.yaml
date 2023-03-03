@@ -1,0 +1,4 @@
+releases:
+- name: istiod
+  namespace: istio-system
+  chart: istio/istiod

@@ -32,7 +32,9 @@ services:
       port: 
         service: 3001
         container: 3001
-      env: []
+      env: 
+        - name: NODE_ENV
+          value: production
     resources:
       limits:
         cpu: 100m
@@ -41,23 +43,24 @@ services:
         cpu: 100m
         memory: 128Mi
 
-  - name: analytic
-    isPublic: true
-    path: /analytic
-    container:
-      image: rizalord/istio-analytic-service:latest
-      port: 
-        service: 3002
-        container: 3002
-      env:
-        - name: USER_SERVICE_HOST
-          value: user-service
-        - name: USER_SERVICE_PORT
-          value: 3001
-    resources:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
+  # - name: analytic
+  #   isPublic: true
+  #   path: /analytic
+  #   container:
+  #     image: rizalord/istio-analytic-service:latest
+  #     port: 
+  #       service: 3002
+  #       container: 3002
+  #     env:
+  #       - name: USER_SERVICE_HOST
+  #         value: user-service
+  #       - name: USER_SERVICE_PORT
+  #         value: 3001
+  #   resources:
+  #     limits:
+  #       cpu: 100m
+  #       memory: 128Mi
+  #     requests:
+  #       cpu: 100m
+  #       memory: 128Mi
+

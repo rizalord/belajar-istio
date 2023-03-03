@@ -4,17 +4,16 @@ import { Transport } from '@nestjs/microservices/enums';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.TCP,
-      options: {
-        host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost',
-        port: 3001,
-      },
+  const app = await NestFactory.create(AppModule);
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: {
+      host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost',
+      port: 3001,
     },
-  );
+  });
 
-  await app.listen();
+  await app.startAllMicroservices();
+  await app.listen(3003);
 }
 bootstrap();
