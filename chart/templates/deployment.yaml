@@ -22,18 +22,32 @@ spec:
         image: {{ .container.image }}
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: {{ .container.port.container | int }}
+        {{ range .container.port.service }}
+        - containerPort: {{ . | int }}
+        {{ end }}
         envFrom:
           - secretRef:
               name: {{ .name }}-secret
         livenessProbe:
-          {{ if .isPublic }}
+          {{ if .container.port.container.http }}
           httpGet:
             path: /health
-            port: {{ .container.port.container | int }}
-          {{ else }}
+            port: {{ .container.port.container.http | int }}
+          {{ else if .container.port.container.tcp }}
           tcpSocket:
-            port: {{ .container.port.container | int }}
+            port: {{ .container.port.container.tcp | int }}
+          {{ end }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          {{ if .container.port.container.http }}
+          httpGet:
+            path: /health
+            port: {{ .container.port.container.http | int }}
+          {{ else if .container.port.container.tcp }}
+          tcpSocket:
+            port: {{ .container.port.container.tcp | int }}
           {{ end }}
           initialDelaySeconds: 60
           periodSeconds: 10

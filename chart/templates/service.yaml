@@ -9,10 +9,12 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: {{ .container.port.service }}
-    targetPort: {{ .container.port.container }}
+  {{ range .container.port.service }}
+  - port: {{ . }}
+    targetPort: {{ . }}
     protocol: TCP
-    name: {{ .name }}-service
+    name: {{ . }}-tcp
+  {{ end }}
   selector:
     app: {{ .name }}-pod
 
