@@ -41,6 +41,7 @@ build-image-auth-service:
   script:
     - cd services/auth-service
     - docker build -t $AUTH_IMAGE_NAME:$AUTH_IMAGE_TAG .
+    - docker push $AUTH_IMAGE_NAME:$AUTH_IMAGE_TAG
 
 build-image-analytic-service:
   stage: build
