@@ -2,6 +2,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: belajar-istio-gw
+  labels:
+    app: belajar-istio-gw
 spec:
   selector:
     istio: ingress

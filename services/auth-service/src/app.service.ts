@@ -49,15 +49,22 @@ export class AppService {
   async login(user: any) {
     const secret = fs.readFileSync('./certs/private.pem');
 
-    user.iss = 'istio.local'
+    user.iss = 'testing@istio.local';
+    user.sub = 'testing@istio.local';
 
     const token = this.jwtService.sign(user, {
       secret,
       expiresIn: '3h',
       algorithm: 'RS256',
+      header: {
+        alg: 'RS256',
+        kid: 'testing',
+        typ: 'JWT',
+      },
     });
 
     user.iss = undefined;
+    user.sub = undefined;
 
     return {
       message: 'Login successful',
@@ -99,12 +106,12 @@ export class AppService {
 
   async getJwks() {
     const publicKey = fs.readFileSync('./certs/public.pem');
-    const jwkKey = await jose.JWK.asKey(publicKey, 'pem', { use: 'sig' });
+    const jwkKey = (await jose.JWK.asKey(publicKey, 'pem')).toJSON() as any;
+    jwkKey.kid = 'testing';
+
     return {
       keys: [
-        {
-          ...jwkKey.toJSON(),
-        },
+        jwkKey,
       ],
     };
   }
