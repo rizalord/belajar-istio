@@ -1,2 +1,3 @@
 App: Belajar Istio
-Description: Belajar Istio Service Mesh dengan Kubernetes
+Version: 0.1.0
+Description: Belajar Istio Service Mesh dengan Kubernetes. Chart ini adalah hasil dari pembelajaran saya tentang Istio. Di dalamnya terdapat beberapa resource Istio yang saya gunakan seperti Gateway, VirtualService, DestinationRule, AuthorizationPolicy dan RequestAuthentication.

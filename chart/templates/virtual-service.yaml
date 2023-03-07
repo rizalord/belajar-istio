@@ -1,32 +1,23 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: belajar-istio-vs
+  name: {{ .Values.appName }}-vs
 spec:
   hosts:
-  - istio.local
+  - {{ .Values.istio.virtual.host }}
   gateways:
-  - belajar-istio-gw
+  - {{ .Values.appName }}-gw
   http:
+  {{ range .Values.istio.virtual.http }}
   - match:
     - uri:
-        prefix: /auth/
+        prefix: {{ .uri }}/
     - uri:
-        exact: /auth
+        exact: {{ .uri }}
     rewrite:
       uri: "/"
     route:
     - destination:
-        host: auth-service
+        host: {{ .destination }}
         subset: v1
-  - match:
-    - uri:
-        prefix: /analytic/
-    - uri:
-        exact: /analytic
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        host: analytic-service
-        subset: v1
+  {{ end }}

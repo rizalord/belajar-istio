@@ -1,16 +1,10 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: belajar-istio-gw
+  name: {{ .Values.appName }}-gw
   labels:
-    app: belajar-istio-gw
+    app: {{ .Values.appName }}-gw
 spec:
   selector:
     istio: ingress
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - 'istio.local'
+  servers: {{ .Values.istio.gateway.servers | toYaml | nindent 4 }}

@@ -5,6 +5,7 @@ domain: istio.local
 services:
   - name: auth
     isPublic: true
+    withAuth: false
     path: /auth
     container:
       image: rizalord/istio-auth-service:latest
@@ -29,6 +30,7 @@ services:
   - name: user
     isPublic: false
     path: null
+    withAuth: false
     container:
       image: rizalord/istio-user-service:latest
       port: 
@@ -52,6 +54,7 @@ services:
   - name: analytic
     isPublic: true
     path: /analytic
+    withAuth: true
     container:
       image: rizalord/istio-analytic-service:latest
       port: 
@@ -72,3 +75,28 @@ services:
         cpu: "500m"
         memory: "512Mi"
 
+istio:
+  auth:
+    jwtRules:
+    - issuer: "testing@istio.local"
+      jwksUri: "http://auth-service.default.svc.cluster.local:3000/.well-known/jwks.json"
+  
+  mtls: 
+    mode: STRICT
+
+  gateway:
+    servers:
+      - port:
+          number: 80
+          name: http
+          protocol: HTTP
+        hosts:
+          - "istio.local"
+
+  virtual:
+    host: "istio.local"
+    http:
+      - uri: /auth
+        destination: auth-service
+      - uri: /analytic
+        destination: analytic-service

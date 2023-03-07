@@ -1,12 +1,15 @@
-# apiVersion: security.istio.io/v1beta1
-# kind: RequestAuthentication
-# metadata:
-#   name: jwt-request-authentication
-#   namespace: default
-# spec:
-#   selector:
-#     matchLabels:
-#       app: analytic-deployment
-#   jwtRules:
-#   - issuer: "istio.local"
-#     jwksUri: http://auth-service:3000/.well-known/jwks.json
+{{ range .Values.services }}
+{{ if .withAuth }}
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: {{ .name }}-request-authentication
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}-pod
+  jwtRules: {{ $.Values.istio.auth.jwtRules | toYaml | nindent 4 }}
+{{ end }}
+{{ end }}
