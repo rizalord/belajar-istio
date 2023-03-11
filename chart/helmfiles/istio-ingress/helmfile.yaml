@@ -1,4 +1,6 @@
 releases:
-- name: istio-ingress
-  namespace: istio-ingress
+- name: istio-ingressgateway
+  # namespace: istio-ingress
+  namespace: istio-system
   chart: istio/gateway
+  wait: true

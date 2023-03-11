@@ -1,0 +1,5 @@
+releases:
+- name: prometheus
+  namespace: metrics
+  chart: prometheus-community/prometheus
+  wait: true

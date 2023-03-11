@@ -1,7 +1,17 @@
 repositories:
 - name: istio
   url: https://istio-release.storage.googleapis.com/charts
+- name: kiali
+  url: https://kiali.org/helm-charts
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+- name: grafana
+  url: https://grafana.github.io/helm-charts
+  
 helmfiles:
   - path: helmfiles/istio-base/helmfile.yaml
   - path: helmfiles/istiod/helmfile.yaml
   - path: helmfiles/istio-ingress/helmfile.yaml
+  - path: helmfiles/kiali-operator/helmfile.yaml
+  - path: helmfiles/prometheus/helmfile.yaml
+  - path: helmfiles/grafana/helmfile.yaml

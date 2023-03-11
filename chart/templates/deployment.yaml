@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         {{ range .container.port.service }}
-        - containerPort: {{ . | int }}
+        - containerPort: {{ .port | int }}
         {{ end }}
         envFrom:
           - secretRef:

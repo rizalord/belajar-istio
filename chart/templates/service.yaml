@@ -10,10 +10,10 @@ spec:
   type: NodePort
   ports:
   {{ range .container.port.service }}
-  - port: {{ . }}
-    targetPort: {{ . }}
+  - port: {{ .port }}
+    targetPort: {{ .port }}
     protocol: TCP
-    name: {{ . }}-tcp
+    name: "{{ .protocol}}-{{ .port }}"
   {{ end }}
   selector:
     app: {{ .name }}-pod

@@ -1,0 +1,6 @@
+releases:
+- name: kiali-operator
+  # namespace: kiali-operator
+  namespace: istio-system
+  chart: kiali/kiali-operator
+  wait: true

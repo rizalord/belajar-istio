@@ -1,7 +1,8 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
-import { AuthGuard } from '@nestjs/passport'
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import {
   HealthCheck,
   HealthCheckService,
@@ -39,7 +40,9 @@ export class AppController {
   }
 
   @Get()
-  getInfo() {
+  getInfo(@Req() req: Request) {
+    console.log(req.headers.authorization);
+
     return {
       name: 'Analytic Service',
       version: '1.0.0',

@@ -6,5 +6,5 @@ metadata:
     app: {{ .Values.appName }}-gw
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers: {{ .Values.istio.gateway.servers | toYaml | nindent 4 }}
