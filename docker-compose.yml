@@ -3,6 +3,8 @@ services:
   user-service:
     image: rizalord/istio-user-service:latest
     container_name: user-service
+    environment:
+      - NODE_ENV=production
     ports:
       - "3001:3001"
     networks:
@@ -18,6 +20,22 @@ services:
       - USER_SERVICE_PORT=3001
     networks:
       - belajar-istio-network
+    depends_on:
+      - user-service
+  
+  analytic-service:
+    image: rizalord/istio-analytic-service:latest
+    container_name: analytic-service
+    ports:
+      - "3002:3002"
+    environment:
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=3001
+      - JWKS_URI=http://auth-service:3000/.well-known/jwks.json
+    networks:
+      - belajar-istio-network
+    depends_on:
+      - user-service
 
 networks:
   belajar-istio-network:
