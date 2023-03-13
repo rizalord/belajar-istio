@@ -44,14 +44,14 @@ Here are the components that are included in this repository:
 4. Set label to default namespace
     
     ```bash
-    kubectl label namespace default istio-injection=enabled --overwrite
+    kubectl label namespace default  istio-injection=enabled --overwrite
     ```
 
 5. Install main chart
         
-        ```bash
-        helm install belajar-istio .
-        ```
+    ```bash
+    helm install belajar-istio .
+    ```
 
 ## Access Kiali Dashboard
 1. Get the status of kiali installation
